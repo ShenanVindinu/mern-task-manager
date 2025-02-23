@@ -1,10 +1,11 @@
 
 import Navbar from "../../components/Navbar/Navbar.tsx";
 import NoteCard from "../../components/Cards/NoteCard.tsx";
+import { MdAdd } from "react-icons/md";
 
 const Home = () => {
     return (
-        <div>
+        <>
             <Navbar />
 
             <div className="container mx-auto">
@@ -19,12 +20,20 @@ const Home = () => {
                         onDelete={() => {}}
                         onPinNote={() => {}}
                     />
+
                 </div>
             </div>
 
+            <button
+                className="w-16 h-16 flex items-center justify-center rounded-full bg-blue-500 hover:bg-blue-600 absolute right-10 bottom-10 transition-colors z-[9999]"
+                onClick={() => {}}
+            >
+                <MdAdd className="text-white text-3xl" />
+            </button>
 
 
-        </div>
+
+        </>
     );
 };
 
