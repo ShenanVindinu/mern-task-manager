@@ -268,6 +268,22 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
     }
 });
 
+// Get User
+app.get("/get-user", authenticateToken, async (req, res) => {
+    const { user } = req.user;
+
+    const isUser = await User.findOne({ _id: user._id });
+
+    if (!isUser) {
+        return res.sendStatus(401);
+    }
+
+    return res.json({
+        user: isUser,
+        message: "",
+    });
+});
+
 app.listen(8080);
 
 module.exports = app;
