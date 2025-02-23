@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import NavBar from "../../components/Navbar/NavBar.tsx";
 import { Link } from "react-router-dom";
 import PasswordInput from "../../components/Input/PasswordInput.tsx";
 import { validateEmail } from "../../utils/helper.tsx";
+import Navbar from "../../components/Navbar/Navbar.tsx";
 
 const Login = () => {
 
@@ -28,7 +28,7 @@ const Login = () => {
 
     return (
         <>
-        <NavBar />
+        <Navbar />
             <div className="flex items-center justify-center mt-28">
                 <div className="w-96 border border-gray-300 rounded-lg bg-white px-7 py-10">
                     <form onSubmit={handleLogin}>
