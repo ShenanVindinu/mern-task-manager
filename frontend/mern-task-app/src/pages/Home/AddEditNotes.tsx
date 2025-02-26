@@ -27,6 +27,7 @@ const AddEditNotes = ({
             });
 
             if (response.data && response.data.note) {
+                showToastMessage("Note Added Successfully");
                 getAllNotes();
                 onClose();
             }
@@ -56,6 +57,7 @@ const AddEditNotes = ({
             });
 
             if (response.data && response.data.note) {
+                showToastMessage("Note Updated");
                 getAllNotes();
                 onClose();
             }

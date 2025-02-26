@@ -10,6 +10,7 @@ import axiosInstance from "../../utils/axiosInstance.ts";
 import AddNotesImg from "../../assets/images/add-notes.svg";
 import NoDataImg from "../../assets/images/no-data.svg";
 import EmptyCard from "../../components/Cards/EmptyCard/EmptyCard.tsx";
+import Toast from "../../components/ToastMassage/Toast.tsx";
 
 const Home = () => {
 
@@ -27,10 +28,32 @@ const Home = () => {
 
     const [loading, setLoading] = useState(true);
 
+    const [showToastMsg, setShowToastMsg] = useState({
+        isShown: false,
+        message: "",
+        type: "add",
+    });
+
     const navigate = useNavigate();
 
     const handleEdit = (noteDetails) => {
         setOpenAddEditModal({ isShown: true, data: noteDetails, type: "edit" });
+    };
+
+    const showToastMessage = (message, type) => {
+        setShowToastMsg({
+            isShown: true,
+            message: message,
+            type,
+        });
+    };
+
+    const handleCloseToast = () => {
+        setShowToastMsg({
+            type: "",
+            isShown: false,
+            message: ""
+        });
     };
 
     // Get User Info
@@ -144,9 +167,16 @@ const Home = () => {
                     noteData={openAddEditModal.data}
                     onClose={() => {
                         setOpenAddEditModal({isShown: false, type: "add", data: null});
-                    }} showToastMessage={undefined} getAllNotes={getAllNotes}                />
+                    }} showToastMessage={showToastMessage} getAllNotes={getAllNotes}                />
             </Modal>
 
+
+            <Toast
+                isShown={showToastMsg.isShown}
+                message={showToastMsg.message}
+                type={showToastMsg.type}
+                onClose={handleCloseToast}
+            />
 
 
         </>
