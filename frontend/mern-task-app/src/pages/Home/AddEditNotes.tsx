@@ -45,7 +45,32 @@ const AddEditNotes = ({
 
 
     //Edit Note
-    const editNote = async () => {}
+    const editNote = async () => {
+        const noteId = noteData._id
+
+        try {
+            const response = await axiosInstance.put("/edit-note/" + noteId, {
+                title,
+                content,
+                tags,
+            });
+
+            if (response.data && response.data.note) {
+                getAllNotes();
+                onClose();
+            }
+        } catch (error) {
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                setError(error.response.data.message);
+            } else {
+                setError("An unexpected error occurred. Please try again.");
+            }
+        }
+    };
 
 
     const handleAddNote = () => {
