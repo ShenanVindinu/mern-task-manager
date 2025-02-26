@@ -7,6 +7,9 @@ import {useEffect, useState} from "react";
 import Modal from "react-modal";
 import {useNavigate} from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance.ts";
+import AddNotesImg from "../../assets/images/add-notes.svg";
+import NoDataImg from "../../assets/images/no-data.svg";
+import EmptyCard from "../../components/Cards/EmptyCard/EmptyCard.tsx";
 
 const Home = () => {
 
@@ -15,6 +18,10 @@ const Home = () => {
         type: "add",
         data: null,
     });
+
+    const [allNotes, setAllNotes] = useState([]);
+
+    const [isSearch, setIsSearch] = useState(false);
 
     const [userInfo, setUserInfo] = useState(null);
 
@@ -39,8 +46,22 @@ const Home = () => {
         }
     };
 
+    // Get all notes
+    const getAllNotes = async () => {
+        try {
+            const response = await axiosInstance.get("/get-all-notes");
+            console.log("API Response:", response.data);
+
+            if (response.data && response.data.notes) {
+                setAllNotes(response.data.notes);
+            }
+        } catch (error) {
+            console.log("An unexpected error occurred. Please try again.");
+        }
+    };
+
     useEffect(() => {
-        // getAllNotes();
+        getAllNotes();
         getUserInfo();
         return () => {};
     }, []);
@@ -59,19 +80,39 @@ const Home = () => {
             />
 
             <div className="container mx-auto">
-                <div className="grid grid-cols-3 gap-4 mt-8 ml-10">
-                    <NoteCard
-                        title="Do Lawn Mowing"
-                        content="lorem ipsum dolor sit amet"
-                        date="2024/01/05"
-                        tags="#sbkcabnscxl"
-                        isPinned={true}
-                        onEdit={() => {}}
-                        onDelete={() => {}}
-                        onPinNote={() => {}}
-                    />
+                {isSearch && (
+                    <h3 className="text-lg font-medium mt-5">Search Results</h3>
+                )}
 
-                </div>
+                {allNotes.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-4 mt-8 ml-10">
+                        {allNotes.map((item) => {
+                            return (
+                                <NoteCard
+                                    key={item._id}
+                                    title={item.title}
+                                    content={item.content}
+                                    date={item.createdOn}
+                                    tags={item.tags}
+                                    isPinned={item.isPinned}
+                                    onEdit={() => {}}
+                                    onDelete={() => {}}
+                                    onPinNote={() => {}}
+                                />
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <EmptyCard
+                        imgSrc={isSearch ? NoDataImg : AddNotesImg}
+                        message={
+                            isSearch
+                                ? `Oops! No notes found matching your search.`
+                                : `Start creating your first note! Click the 'Add' button to jot down your
+                                    thoughts, ideas, and reminders. Let's get started!`
+                        }
+                    />
+                )}
             </div>
 
             <button
