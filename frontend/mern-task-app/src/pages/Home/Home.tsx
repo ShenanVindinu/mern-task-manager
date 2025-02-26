@@ -102,6 +102,22 @@ const Home = () => {
         }
     };
 
+    // Search for a Note
+    const onSearchNote = async (query) => {
+        try {
+            const response = await axiosInstance.get("/search-notes", {
+                params: { query },
+            });
+
+            if (response.data && response.data.notes) {
+                setIsSearch(true);
+                setAllNotes(response.data.notes);
+            }
+        } catch (error) {
+            console.log("An unexpected error occurred. Please try again.");
+        }
+    };
+
     useEffect(() => {
         getAllNotes();
         getUserInfo();
@@ -117,13 +133,13 @@ const Home = () => {
         <>
             <Navbar
                 userInfo={userInfo}
-                // onSearchNote={onSearchNote}
+                onSearchNote={onSearchNote}
                 // handleClearSearch={handleClearSearch}
             />
 
             <div className="container mx-auto">
                 {isSearch && (
-                    <h3 className="text-lg font-medium mt-5">Search Results</h3>
+                    <h3 className="text-lg font-medium mt-5 ml-10">Search Results</h3>
                 )}
 
                 {allNotes.length > 0 ? (
