@@ -5,7 +5,7 @@ import { MdAdd } from "react-icons/md";
 import AddEditNotes from "./AddEditNotes.tsx";
 import {useEffect, useState} from "react";
 import Modal from "react-modal";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance.ts";
 import AddNotesImg from "../../assets/images/add-notes.svg";
 import NoDataImg from "../../assets/images/no-data.svg";
@@ -87,6 +87,21 @@ const Home = () => {
         }
     };
 
+    // Delete Note
+    const deleteNote = async (data) => {
+        const noteId = data._id;
+        try {
+            const response = await axiosInstance.delete("/delete-note/" + noteId);
+
+            if (response.data && !response.data.error) {
+                showToastMessage("Note Deleted Successfully", "delete");
+                getAllNotes();
+            }
+        } catch (error) {
+            console.log("An unexpected error occurred. Please try again.");
+        }
+    };
+
     useEffect(() => {
         getAllNotes();
         getUserInfo();
@@ -123,7 +138,7 @@ const Home = () => {
                                     tags={item.tags}
                                     isPinned={item.isPinned}
                                     onEdit={() => handleEdit(item) }
-                                    onDelete={() => {}}
+                                    onDelete={() => deleteNote(item)}
                                     onPinNote={() => {}}
                                 />
                             );
