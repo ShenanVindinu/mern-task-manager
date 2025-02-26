@@ -140,7 +140,7 @@ const Home = () => {
                     noteData={openAddEditModal.data}
                     onClose={() => {
                         setOpenAddEditModal({isShown: false, type: "add", data: null});
-                    }} showToastMessage={undefined} getAllNotes={undefined}                />
+                    }} showToastMessage={undefined} getAllNotes={getAllNotes}                />
             </Modal>
 
 
