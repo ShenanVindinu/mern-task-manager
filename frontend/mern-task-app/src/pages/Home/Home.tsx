@@ -118,6 +118,33 @@ const Home = () => {
         }
     };
 
+    // Update is Pinned
+    const updateIsPinned = async (noteData) => {
+        const noteId = noteData._id;
+
+        try {
+            const response = await axiosInstance.put(
+                "/update-note-pinned/" + noteId,
+                {
+                    isPinned: !noteData.isPinned,
+                }
+            );
+
+            if (response.data && response.data.note) {
+                showToastMessage("Note Updated Successfully", "update");
+                getAllNotes();
+            }
+        } catch (error) {
+            console.log("An unexpected error occurred. Please try again.");
+        }
+    };
+
+
+    const handleClearSearch = () => {
+        setIsSearch(false);
+        getAllNotes();
+    };
+
     useEffect(() => {
         getAllNotes();
         getUserInfo();
@@ -134,7 +161,7 @@ const Home = () => {
             <Navbar
                 userInfo={userInfo}
                 onSearchNote={onSearchNote}
-                // handleClearSearch={handleClearSearch}
+                handleClearSearch={handleClearSearch}
             />
 
             <div className="container mx-auto">
@@ -155,7 +182,7 @@ const Home = () => {
                                     isPinned={item.isPinned}
                                     onEdit={() => handleEdit(item) }
                                     onDelete={() => deleteNote(item)}
-                                    onPinNote={() => {}}
+                                    onPinNote={() => updateIsPinned(item)}
                                 />
                             );
                         })}
